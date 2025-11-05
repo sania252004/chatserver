@@ -7,14 +7,18 @@ dotenv.config();
 
 const app = express();
 
+// ✅ Fix CORS once and for all
 app.use(
   cors({
-    origin: ["http://localhost:5173"], 
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: ["http://localhost:5173", "https://chatserver-1-n3eg.onrender.com"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+
+// ✅ Handle preflight requests explicitly
+app.options("*", cors());
 
 // ✅ Middleware
 app.use(express.json());
@@ -23,13 +27,13 @@ app.use(express.json());
 import userRoutes from "./routes/userRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 
-// ✅ Use routes
+// ✅ Routes
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 
-// ✅ Health check route (to verify on Render)
+// ✅ Health check route
 app.get("/", (req, res) => {
-  res.send("✅ Server is running fine!");
+  res.json({ message: "✅ Server running properly" });
 });
 
 // ✅ Start server
