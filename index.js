@@ -9,10 +9,7 @@ const app = express();
 
 // ✅ Proper CORS configuration
 app.use(cors({
-  origin: [
-    "http://localhost:5173",             // your local frontend
-    "https://your-frontend-domain.com"   // optional: deployed frontend
-  ],
+  origin: ["http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
