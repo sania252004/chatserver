@@ -1,31 +1,35 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import connectDb from './database/db.js'; 
+import connectDb from './database/db.js';
 import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
 
-
-app.use(express.json());
-
-
+// ✅ Proper CORS configuration
 app.use(cors({
-  origin: ["http://localhost:5173", "https://your-frontend-domain.com"], 
+  origin: [
+    "http://localhost:5173",             // your local frontend
+    "https://your-frontend-domain.com"   // optional: deployed frontend
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true 
+  credentials: true
 }));
 
+// ✅ Middleware
+app.use(express.json());
 
+// ✅ Import routes
 import userRoutes from './routes/userRoutes.js';
-import chatRoutes from './routes/chatRoutes.js'; 
+import chatRoutes from './routes/chatRoutes.js';
 
-
+// ✅ Use routes
 app.use('/api/user', userRoutes);
-app.use("/api/chat", chatRoutes);
+app.use('/api/chat', chatRoutes);
 
+// ✅ Start server
 app.listen(process.env.PORT, () => {
-  console.log('Server is running on port', process.env.PORT);   
+  console.log(`✅ Server is running on port ${process.env.PORT}`);
   connectDb();
-}); 
+});
